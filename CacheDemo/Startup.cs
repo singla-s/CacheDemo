@@ -24,7 +24,17 @@ namespace CacheDemo
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            //injection for inmemory cache
             services.AddMemoryCache();
+
+            //injection for distributed cache
+            services.AddDistributedSqlServerCache(sqlOptions =>
+            {
+                sqlOptions.ConnectionString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=DistCache;Integrated Security=True";
+                sqlOptions.TableName = "cache";
+                sqlOptions.SchemaName = "dbo";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
